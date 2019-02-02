@@ -53,7 +53,6 @@ class SignIn : AppCompatActivity() {
         // If the user is signed in, send them to
         if (user != null) {
             val intent = Intent(this, Main::class.java)
-            // start your next activity
             startActivity(intent)
             finish()
         }

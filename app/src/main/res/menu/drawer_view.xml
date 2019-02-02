@@ -4,11 +4,14 @@
         <item
                 android:id="@+id/nav_my_list"
                 android:icon="@drawable/ic_link"
-                android:title="My List" />
+                android:title="@string/my_list" />
         <item
                 android:id="@+id/nav_messages"
                 android:icon="@drawable/ic_map"
-                android:title="Messages" />
-
+                android:title="@string/messages" />
+        <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="@string/logout" />
     </group>
 </menu>
