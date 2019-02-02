@@ -29,7 +29,7 @@ class NavigationDrawer : AppCompatActivity() {
         }
 
         val baseTransaction = supportFragmentManager.beginTransaction()
-        baseTransaction.add(R.id.content_frame, ResourceFragment())
+        baseTransaction.add(R.id.content_frame, MyListFragment())
         baseTransaction.commit()
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
@@ -45,9 +45,9 @@ class NavigationDrawer : AppCompatActivity() {
             println(menuItem)
 
             val fragment = when (menuItem.toString()) {
-                "Maps" -> MapFragment()
-                "Resources" -> ResourceFragment()
-                else -> MapFragment()
+                "Messages" -> MessagesFragment()
+                "My List" -> MyListFragment()
+                else -> MessagesFragment()
             }
 
             // Add code here to update the UI based on the item selected
