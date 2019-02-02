@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">BucketShare</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="Resources">
+        <item>Emergency Contacts</item>
+        <item>First Year Contacts</item>
+        <item>Counselling Services</item>
+        <item>Career Services</item>
+    </string-array>
 </resources>
