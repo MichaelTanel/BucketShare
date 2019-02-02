@@ -3,9 +3,7 @@ package com.qhackers.bucketshare
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -54,7 +52,7 @@ class SignIn : AppCompatActivity() {
 
         // If the user is signed in, send them to
         if (user != null) {
-            val intent = Intent(this, NavigationDrawer::class.java)
+            val intent = Intent(this, Main::class.java)
             // start your next activity
             startActivity(intent)
             finish()

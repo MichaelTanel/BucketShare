@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 
 
-class NavigationDrawer : AppCompatActivity() {
+class Main : AppCompatActivity() {
 
     private lateinit var mDrawerLayout: DrawerLayout
 
