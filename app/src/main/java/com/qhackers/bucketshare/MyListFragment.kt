@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter
 
 
 
-class ResourceFragment : ListFragment() {
+class MyListFragment : ListFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
