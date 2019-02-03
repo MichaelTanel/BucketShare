@@ -1,21 +1,20 @@
 package com.qhackers.bucketshare
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
-import android.R
-import android.util.Log
-import android.widget.AdapterView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_list.*
 
 class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
@@ -81,7 +80,8 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        Toast.makeText(activity, "Item: $position", Toast.LENGTH_SHORT).show()
+        val intent = Intent(activity, PeopleListActivity::class.java)
+        startActivity(intent)
     }
 
     fun launchDialog() {
