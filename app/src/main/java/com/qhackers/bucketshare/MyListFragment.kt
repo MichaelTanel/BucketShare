@@ -42,24 +42,6 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
                 listAdapter.notifyDataSetChanged()
             }
 
-        // get list of people who have this item query
-        db.collection("lists")
-            .whereArrayContains("content", "skydiving")
-            .get()
-            .addOnSuccessListener { result ->
-                if (result != null) {
-                    result.documents
-                        .filter { doc ->
-                            doc.id != auth.currentUser?.email
-                        }
-                        .forEach { doc ->
-                        println("DEBUG: list of people: ${doc.id}")
-                    }
-                } else {
-                    println("DEBUG: No people results")
-                }
-            }
-
         // Inflate the layout for this fragment
         return inflater.inflate(com.qhackers.bucketshare.R.layout.fragment_my_list, container, false)
     }
