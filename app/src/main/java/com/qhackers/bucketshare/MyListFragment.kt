@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -81,6 +78,8 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         val intent = Intent(activity, PeopleListActivity::class.java)
+        val selected = (view?.findViewById(R.id.tvItem) as TextView).text.toString()
+        intent.putExtra("activity", selected)
         startActivity(intent)
     }
 
