@@ -80,24 +80,36 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
     fun launchEditDialog(position: Int, oldText: String) {
         val builder = AlertDialog.Builder(this.context)
         val inflater = layoutInflater
-        builder.setTitle("With EditText")
+        builder.setTitle("Edit your activity")
         val dialogLayout = inflater.inflate(com.qhackers.bucketshare.R.layout.alert_dialog_with_edittext, null)
         val editText  = dialogLayout.findViewById<EditText>(com.qhackers.bucketshare.R.id.editText)
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, i ->
-            Toast.makeText(this.context, "Successfully added item " + editText.text.toString(), Toast.LENGTH_SHORT).show()
-            stringList[position] = editText.text.toString()
-            addItems()
-
+//            Toast.makeText(this.context, "Successfully added item " + editText.text.toString(), Toast.LENGTH_SHORT).show()
             // write item to firestore
             val auth = FirebaseAuth.getInstance()
             val db = FirebaseFirestore.getInstance()
-            db.collection("lists")
-                .document(auth.currentUser?.email!!)
-                .update("content", FieldValue.arrayRemove(oldText))
-            db.collection("lists")
-                .document(auth.currentUser?.email!!)
-                .update("content", FieldValue.arrayUnion(editText.text.toString()))
+
+            if (editText.text.toString() == "") {
+                stringList.removeAt(position)
+                db.collection("lists")
+                    .document(auth.currentUser?.email!!)
+                    .update("content", FieldValue.arrayRemove(oldText))
+                listAdapter.notifyDataSetChanged()
+            } else {
+                stringList[position] = editText.text.toString()
+                addItems()
+                db.collection("lists")
+                    .document(auth.currentUser?.email!!)
+                    .update("content", FieldValue.arrayRemove(oldText))
+                db.collection("lists")
+                    .document(auth.currentUser?.email!!)
+                    .update("content", FieldValue.arrayUnion(editText.text.toString()))
+            }
+
+        }
+        builder.setNegativeButton("Cancel") { dialogInterface, i ->
+            dialogInterface.cancel()
         }
         builder.show()
     }
@@ -105,12 +117,12 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
     fun launchDialog() {
         val builder = AlertDialog.Builder(this.context)
         val inflater = layoutInflater
-        builder.setTitle("With EditText")
+        builder.setTitle("Enter your activity")
         val dialogLayout = inflater.inflate(com.qhackers.bucketshare.R.layout.alert_dialog_with_edittext, null)
         val editText  = dialogLayout.findViewById<EditText>(com.qhackers.bucketshare.R.id.editText)
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, i ->
-            Toast.makeText(this.context, "Successfully added item " + editText.text.toString(), Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this.context, "Successfully added item " + editText.text.toString(), Toast.LENGTH_SHORT).show()
             stringList.add(editText.text.toString())
             addItems()
 
@@ -120,6 +132,9 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
             db.collection("lists")
                 .document(auth.currentUser?.email!!)
                 .update("content", FieldValue.arrayUnion(editText.text.toString()))
+        }
+        builder.setNegativeButton("Cancel") { dialogInterface, i ->
+            dialogInterface.cancel()
         }
         builder.show()
     }

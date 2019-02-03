@@ -12,7 +12,6 @@ import com.sendbird.android.UserMessage
 import com.sendbird.android.SendBird
 import android.view.LayoutInflater
 
-
 class MessageListAdapter(val context: Context, val messageList: List<BaseMessage>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_MESSAGE_SENT = 1
