@@ -1,6 +1,7 @@
 package com.qhackers.bucketshare
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.util.Log
@@ -58,7 +59,8 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        Toast.makeText(activity, "Item: $position", Toast.LENGTH_SHORT).show()
+        val intent = Intent(activity, PeopleListActivity::class.java)
+        startActivity(intent)
     }
 
     fun launchDialog() {
