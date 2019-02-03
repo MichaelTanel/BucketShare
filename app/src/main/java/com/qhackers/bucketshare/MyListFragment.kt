@@ -8,14 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_my_list.*
+import android.widget.TextView
+
+
 
 class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
 
@@ -59,11 +59,47 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
         fab.setOnClickListener {
             launchDialog()
         }
+
+        list.setOnItemLongClickListener { parent, view, position, id ->
+            if (view is TextView) {
+                val oldText: String = view.text.toString()
+                launchEditDialog(position, oldText)
+            }
+
+            true
+        }
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         val intent = Intent(activity, PeopleListActivity::class.java)
+        val selected = (view?.findViewById(R.id.tvItem) as TextView).text.toString()
+        intent.putExtra("activity", selected)
         startActivity(intent)
+    }
+
+    fun launchEditDialog(position: Int, oldText: String) {
+        val builder = AlertDialog.Builder(this.context)
+        val inflater = layoutInflater
+        builder.setTitle("With EditText")
+        val dialogLayout = inflater.inflate(com.qhackers.bucketshare.R.layout.alert_dialog_with_edittext, null)
+        val editText  = dialogLayout.findViewById<EditText>(com.qhackers.bucketshare.R.id.editText)
+        builder.setView(dialogLayout)
+        builder.setPositiveButton("OK") { dialogInterface, i ->
+            Toast.makeText(this.context, "Successfully added item " + editText.text.toString(), Toast.LENGTH_SHORT).show()
+            stringList[position] = editText.text.toString()
+            addItems()
+
+            // write item to firestore
+            val auth = FirebaseAuth.getInstance()
+            val db = FirebaseFirestore.getInstance()
+            db.collection("lists")
+                .document(auth.currentUser?.email!!)
+                .update("content", FieldValue.arrayRemove(oldText))
+            db.collection("lists")
+                .document(auth.currentUser?.email!!)
+                .update("content", FieldValue.arrayUnion(editText.text.toString()))
+        }
+        builder.show()
     }
 
     fun launchDialog() {
