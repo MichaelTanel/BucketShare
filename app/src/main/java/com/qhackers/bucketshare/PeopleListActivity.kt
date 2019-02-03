@@ -68,7 +68,7 @@ class PeopleListActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val selected = (view?.findViewById(R.id.tvItem) as TextView).text.toString()
         val intent = Intent(this, MessageListActivity::class.java)
-        intent.putExtra("activity", selected)
+        intent.putExtra("email", selected)
         startActivity(intent)
     }
 
