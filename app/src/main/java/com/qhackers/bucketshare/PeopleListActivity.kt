@@ -31,6 +31,7 @@ class PeopleListActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         intentExtra = intent.getStringExtra("activity")
+        setTitle(intentExtra)
 
         nameList.clear()
         listAdapter = ArrayAdapter(this, com.qhackers.bucketshare.R.layout.list_item, nameList)
