@@ -3,16 +3,14 @@ package com.qhackers.bucketshare
 import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
-import android.R
-import android.util.Log
-import android.widget.AdapterView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_list.*
 
 class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
