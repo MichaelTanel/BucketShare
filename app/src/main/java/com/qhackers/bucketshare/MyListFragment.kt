@@ -12,6 +12,9 @@ import android.widget.Toast
 import android.R
 import android.util.Log
 import android.widget.AdapterView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_list.*
 
@@ -28,6 +31,19 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        println("DEBUG: show list fragment @@@@")
+        val auth = FirebaseAuth.getInstance()
+        val db = FirebaseFirestore.getInstance()
+        db.collection("lists")
+            .document(auth.currentUser?.email!!)
+            .get()
+            .addOnSuccessListener { doc ->
+                println("DEBUG: list data is: " + doc.data!!["content"])
+                println("DEBUG:" + doc.data!!["content"] as? List<String>)
+                stringList.clear()
+                stringList.addAll(doc.data!!["content"] as List<String>)
+                listAdapter.notifyDataSetChanged()
+            }
         return inflater.inflate(com.qhackers.bucketshare.R.layout.fragment_my_list, container, false)
     }
 
@@ -54,11 +70,17 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
         val dialogLayout = inflater.inflate(com.qhackers.bucketshare.R.layout.alert_dialog_with_edittext, null)
         val editText  = dialogLayout.findViewById<EditText>(com.qhackers.bucketshare.R.id.editText)
         builder.setView(dialogLayout)
-        builder.setPositiveButton("OK") {
-                dialogInterface, i ->
+        builder.setPositiveButton("OK") { dialogInterface, i ->
             Toast.makeText(this.context, "Successfully added item " + editText.text.toString(), Toast.LENGTH_SHORT).show()
             stringList.add(editText.text.toString())
             addItems()
+
+            // write item to firestore
+            val auth = FirebaseAuth.getInstance()
+            val db = FirebaseFirestore.getInstance()
+            db.collection("lists")
+                .document(auth.currentUser?.email!!)
+                .update("content", FieldValue.arrayUnion(editText.text.toString()))
         }
         builder.show()
     }
