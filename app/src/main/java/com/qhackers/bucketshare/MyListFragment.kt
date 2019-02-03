@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,24 +45,6 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
                 listAdapter.notifyDataSetChanged()
             }
 
-        // get list of people who have this item query
-        db.collection("lists")
-            .whereArrayContains("content", "skydiving")
-            .get()
-            .addOnSuccessListener { result ->
-                if (result != null) {
-                    result.documents
-                        .filter { doc ->
-                            doc.id != auth.currentUser?.email
-                        }
-                        .forEach { doc ->
-                        println("DEBUG: list of people: ${doc.id}")
-                    }
-                } else {
-                    println("DEBUG: No people results")
-                }
-            }
-
         // Inflate the layout for this fragment
         return inflater.inflate(com.qhackers.bucketshare.R.layout.fragment_my_list, container, false)
     }
@@ -93,6 +72,8 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         val intent = Intent(activity, PeopleListActivity::class.java)
+        val selected = (view?.findViewById(R.id.tvItem) as TextView).text.toString()
+        intent.putExtra("activity", selected)
         startActivity(intent)
     }
 
