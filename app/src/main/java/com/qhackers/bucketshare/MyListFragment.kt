@@ -6,19 +6,23 @@ import android.support.v4.app.ListFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
-import android.R
+import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.widget.AdapterView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_list.*
+import android.support.v7.widget.LinearLayoutManager
+import android.R
+import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
+import android.widget.LinearLayout
 
-class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
+
+class MyListFragment : Fragment(), AdapterView.OnItemClickListener {
 
     var stringList: ArrayList<String> = ArrayList()
-    private lateinit var listAdapter: ArrayAdapter<String>
+    private lateinit var listAdapter: MyListAdapter
 
     companion object {
         fun newInstance(): MyListFragment {
@@ -34,9 +38,12 @@ class MyListFragment : ListFragment(), AdapterView.OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         stringList.clear()
-        listAdapter = ArrayAdapter(context, com.qhackers.bucketshare.R.layout.list_item, stringList)
+        listAdapter = MyListAdapter(stringList)
         list.adapter = listAdapter
-        list.onItemClickListener = this@MyListFragment
+        // Set layout manager to position the items
+        list.layoutManager = LinearLayoutManager(context)
+        list.layoutManager = GridLayoutManager(activity, 1)
+//        list.onItemClickListener = this@MyListFragment
 
         fab.setOnClickListener {
             launchDialog()
