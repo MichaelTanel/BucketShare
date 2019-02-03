@@ -17,8 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
-
-
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class Main : AppCompatActivity() {
@@ -49,6 +49,31 @@ class Main : AppCompatActivity() {
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        // add user to users collection in firestore if new user
+        val db = FirebaseFirestore.getInstance()
+        val reference = db.collection("users")
+            .document(auth.currentUser?.email!!)
+        reference.get()
+            .addOnSuccessListener { doc ->
+                if (doc.data != null) {
+                    println("DEBUG: This is doc data: " + doc.data)
+                    println("DEBUG: This is the doc id: " + doc.id)
+                } else {
+                    println("DEBUG: Creating document")
+                    val user = HashMap<String, DocumentReference>()
+                    val list = HashMap<String, List<String>>()
+                    list["content"] = listOf("")
+                    val listDoc = db.collection("lists")
+                        .document(auth.currentUser?.email!!)
+                    listDoc.set(list)
+                    user["list"] = listDoc
+                    reference.set(user)
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("DEBUG: " + exception)
+            }
 
         val baseTransaction = supportFragmentManager.beginTransaction()
         baseTransaction.add(R.id.content_frame, MyListFragment())
